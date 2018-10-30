@@ -1,0 +1,43 @@
+import random
+import oxfordApiOperations
+
+retry = 'y'
+
+while retry == 'y':
+    wordList = oxfordApiOperations.getWordList()
+
+    random_number = random.randint(0, 5000)
+    random_word_id = wordList[random_number][0]
+    random_word = wordList[random_number][1]
+
+    wordDesc = oxfordApiOperations.getWordDescription(random_word_id)
+    print(wordDesc)
+
+    len_word = len(random_word)
+
+    print(len_word, ' letters')
+
+    word_trick = '-'*len_word
+
+    i = 0
+
+    chosen = []
+
+    while i != len_word:
+        answer = input(word_trick + ' \n')
+        i += 1
+        if answer == random_word:
+            print("Correct Answer!!!! :", random_word)
+            break
+        else:
+            tr_num = random.choice([x for x in range(0, len_word) if x not in chosen])
+            chosen.append(tr_num)
+            tr = random_word[tr_num]
+            word_trick = list(word_trick)
+            word_trick[tr_num] = tr
+            word_trick = "".join(word_trick) ### list to string
+
+    if answer != random_word:
+        print('WRONG!!!! The answer is :', random_word)
+
+    retry = input('Again? (y/n)')
